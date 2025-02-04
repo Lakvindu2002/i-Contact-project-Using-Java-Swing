@@ -25,9 +25,12 @@ class AddCustomerForm extends JFrame{
 	private JButton btnAdd;
 	private JButton btnCancel;
 	private JButton btnHomePage;
+	public static String idNo="";
+	public static int counter=1;
+	private CustomerCollection customerCollection;
 	
-	AddCustomerForm(){
-		 
+	AddCustomerForm(CustomerCollection customerCollection){
+		 this.customerCollection=customerCollection;
 		    setSize(500,500);
 			setTitle("Add Contact");
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -77,6 +80,7 @@ class AddCustomerForm extends JFrame{
 			txtId=sizeSettings(10);
 			txtId.setBorder(null);
 			txtId.setEditable(false);
+			txtId.setText(generateCustomerID());
 			idtxtPanel.add(txtId);
 			txtPanel.add(idtxtPanel);
 			
@@ -123,6 +127,40 @@ class AddCustomerForm extends JFrame{
 			footerRow1.add(btnCancel);
 
 			btnAdd =btnSettings("Add Contact");
+			
+			btnAdd.addActionListener(new ActionListener(){
+				
+				public void actionPerformed(ActionEvent e){
+					
+					String id=txtId.getText();
+					String name=txtName.getText();
+					String number=txtNumber.getText();
+					String company=txtCompany.getText();
+					double salary=Double.parseDouble(txtSalary.getText());
+					String birthday=txtBirthDay.getText();
+					
+					Customer c1=new Customer(id,name,number,company,salary,birthday);
+					
+					if(customerCollection.add(c1)){
+						JOptionPane.showMessageDialog(null,"Contact Added");
+						txtId.setText(generateCustomerID());
+						txtId.setEditable(false);
+						txtName.requestFocus();
+						txtName.setText("");
+						txtNumber.setText("");
+						txtCompany.setText("");
+						txtSalary.setText("");
+						txtBirthDay.setText("");
+					
+						
+						}else{
+							JOptionPane.showMessageDialog(null,"Contact Adding fail");
+							
+							}
+					
+					}
+				
+				});
 			btnAdd.setFont(new Font("", Font.BOLD, 20));
 			footerRow1.add(btnAdd);
 
@@ -170,17 +208,12 @@ class AddCustomerForm extends JFrame{
         return btn;
     }
 
-	//~ private String genarateCustomerId(){
-		//~ if(customerCollection.size()==0){
-			
-			//~ return "C0001";
-			
-			//~ }
-			//~ String lastId=customerCollection.get(customerCollection.size()-1).getId();
-			//~ String lastNo=lastId.substring(1);
-			//~ int userID=Integer.parseInt(lastNo);
-			//~ String newUserId=String.format("C%04d",userID+1);
-			//~ return newUserId;
-		
-		//~ }
+	private  String generateCustomerID() {
+        return String.format("B%04d", counter++);
+    }	
+	private  void decrementCustomerID() {
+        if (counter > 1) { 
+            counter--;
+        }
+    }	
 }

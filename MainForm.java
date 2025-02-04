@@ -13,10 +13,12 @@ class MainForm extends JFrame{
 	private JButton btnDelete;
 	private JButton btnExit;
 	
+	private CustomerCollection customerCollection;
+	
 	
 	
 		MainForm(){
-			
+			customerCollection=new CustomerCollection();
 			setSize(600,600);
 			setTitle("Main Form");
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -39,7 +41,7 @@ class MainForm extends JFrame{
 			btnAdd.addActionListener(new ActionListener(){
 				
 				public void actionPerformed(ActionEvent evt){
-					new AddCustomerForm().setVisible(true);
+					new AddCustomerForm(customerCollection).setVisible(true);
 					}
 				
 				});
