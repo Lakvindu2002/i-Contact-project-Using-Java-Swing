@@ -2,6 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+
 class AddCustomerForm extends JFrame{
 	
 	private JLabel lblTitle;
@@ -47,7 +53,7 @@ class AddCustomerForm extends JFrame{
 			
 			
 			JPanel lblPanel=new JPanel(new GridLayout(6,1));
-			lblPanel.setBorder(new EmptyBorder(40,20,10,0));
+			lblPanel.setBorder(new EmptyBorder(40,10,10,0));
 			
 			lblId=lblSettings("ID ");
 			lblPanel.add(lblId);
@@ -68,7 +74,7 @@ class AddCustomerForm extends JFrame{
 			lblPanel.add(lblSalary);
 			
 			
-			lblBirthDay=lblSettings("BirthDay");
+			lblBirthDay=lblSettings("BirthDay(yyyy/mm/dd)");
 			lblPanel.add(lblBirthDay);
 			
 			add("West",lblPanel);
@@ -123,50 +129,128 @@ class AddCustomerForm extends JFrame{
 
             JPanel footerRow1 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             btnCancel = btnSettings("Cancel");
+            btnCancel.addActionListener(new ActionListener(){
+				
+				public void actionPerformed(ActionEvent e){
+					dispose();
+
+					
+					}
+				
+				});
             btnCancel.setFont(new Font("", Font.BOLD, 20));
 			footerRow1.add(btnCancel);
 
 			btnAdd =btnSettings("Add Contact");
 			
-			btnAdd.addActionListener(new ActionListener(){
-				
-				public void actionPerformed(ActionEvent e){
-					
-					String id=txtId.getText();
-					String name=txtName.getText();
-					String number=txtNumber.getText();
-					String company=txtCompany.getText();
-					double salary=Double.parseDouble(txtSalary.getText());
-					String birthday=txtBirthDay.getText();
-					
-					Customer c1=new Customer(id,name,number,company,salary,birthday);
-					
-					if(customerCollection.add(c1)){
-						JOptionPane.showMessageDialog(null,"Contact Added");
-						txtId.setText(generateCustomerID());
-						txtId.setEditable(false);
-						txtName.requestFocus();
-						txtName.setText("");
-						txtNumber.setText("");
-						txtCompany.setText("");
-						txtSalary.setText("");
-						txtBirthDay.setText("");
-					
-						
-						}else{
-							JOptionPane.showMessageDialog(null,"Contact Adding fail");
-							
-							}
-					
-					}
-				
-				});
+			btnAdd.addActionListener(new ActionListener() {
+    public void actionPerformed(ActionEvent e) {
+        
+        String Nname = "";
+        String Nnumber = "";
+        String Ncompany = "";
+        double Nsalary = 0;
+        String Nbirthday = "";
+        boolean isValid = true;  
+
+       
+        String id = txtId.getText().trim();
+
+        
+        String name = txtName.getText().trim();
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Enter Name");
+            txtName.setText("");
+            txtName.requestFocus();
+            isValid = false;
+        } else {
+            Nname = name;
+        }
+
+     
+        String number = txtNumber.getText().trim();
+        if (!customerCollection.numberValidation(number)) {
+            JOptionPane.showMessageDialog(null, "Please Enter a valid number");
+            txtNumber.setText("");
+            txtNumber.requestFocus();
+            isValid = false;
+        } else {
+            Nnumber = number;
+        }
+
+        
+        String company = txtCompany.getText().trim();
+        if (company.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Enter Company Name");
+            txtCompany.setText("");
+            txtCompany.requestFocus();
+            isValid = false;
+        } else {
+            Ncompany = company;
+        }
+
+        
+      
+            double salary = Double.parseDouble(txtSalary.getText().trim());
+            if (salary <= 0) {
+                JOptionPane.showMessageDialog(null, "Salary must be greater than zero");
+                txtSalary.setText("");
+                txtSalary.requestFocus();
+                isValid = false;
+            } else {
+                Nsalary = salary;
+            }
+      
+            
+        
+
+       
+        String birthday = txtBirthDay.getText().trim();
+        if (!customerCollection.birthdayValidation(birthday)) {
+            JOptionPane.showMessageDialog(null, "Please Enter a valid Birthday (YYYY-MM-DD)");
+            txtBirthDay.setText("");
+            txtBirthDay.requestFocus();
+            isValid = false;
+        } else {
+            Nbirthday = birthday;
+        }
+
+        
+        if (isValid) {
+            Customer c1 = new Customer(id, Nname, Nnumber, Ncompany, Nsalary, Nbirthday);
+            if (customerCollection.add(c1)) {
+                JOptionPane.showMessageDialog(null, "Contact Added");
+                
+                txtId.setText(generateCustomerID());
+                txtId.setEditable(false);
+                txtName.requestFocus();
+                txtName.setText("");
+                txtNumber.setText("");
+                txtCompany.setText("");
+                txtSalary.setText("");
+                txtBirthDay.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "Contact Adding Failed");
+            }
+        }
+    }
+});
+
 			btnAdd.setFont(new Font("", Font.BOLD, 20));
 			footerRow1.add(btnAdd);
 
 
 			JPanel footerRow2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			btnHomePage = new JButton("🏠 Back To Home");
+			btnHomePage.addActionListener(new ActionListener(){
+				
+				public void actionPerformed(ActionEvent e){
+					//new MainForm().setVisible(true);
+						dispose();
+					
+					}
+				
+				});
 			btnHomePage.setFont(new Font("", Font.BOLD, 15));
 			footerRow2.add(btnHomePage);
 
@@ -185,7 +269,7 @@ class AddCustomerForm extends JFrame{
 		private static JTextField sizeSettings(int size){
 			
 			JTextField txt=new JTextField(size);
-			txt.setFont(new Font("",1,20));
+			txt.setFont(new Font("",1,15));
 			return txt;
 			
 			}
@@ -193,7 +277,7 @@ class AddCustomerForm extends JFrame{
 		private static JLabel lblSettings(String txt){
 			
 			JLabel lbl=new JLabel(txt);
-			lbl.setFont(new Font("",1,20));
+			lbl.setFont(new Font("",1,16));
 			return lbl;
 			
 			} 

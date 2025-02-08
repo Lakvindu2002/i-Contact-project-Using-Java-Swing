@@ -26,9 +26,10 @@ class SearchCustomerForm extends JFrame{
 	
 	private JButton btnHomePage;
 	private JButton btnSearch;
+	private CustomerCollection customerCollection;
 	
-	SearchCustomerForm(){
-		 
+	SearchCustomerForm(CustomerCollection customerCollection){
+			this.customerCollection=customerCollection;
 		    setSize(500,500);
 			setTitle("Search Contact");
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -45,17 +46,65 @@ class SearchCustomerForm extends JFrame{
 			
 			txtSearch=new JTextField(20);
 			txtSearch.setFont(new Font("",1,20));
+			txtSearch.addActionListener(new ActionListener(){
+				
+				public void actionPerformed(ActionEvent e){
+					
+					String newId=txtSearch.getText();
+					Customer c1=customerCollection.search(newId);
+					if(c1!=null){
+							
+							JOptionPane.showMessageDialog(null,"Contact Found..!");
+							txtId.setText(c1.getId());
+							txtName.setText(c1.getName());
+							txtNumber.setText(c1.getNumber());
+							txtCompany.setText(c1.getCompany());
+							txtSalary.setText(c1.getSalary()+"");
+							txtBirthDay.setText(c1.getBirthDay());
+							txtSearch.setText("");
+						}else{
+							
+							JOptionPane.showMessageDialog(null,"Contact not Found..!");
+							txtSearch.setText("");
+							txtSearch.requestFocus();
+							}
+					
+					}
+				
+				});
 			titleRw2.add(txtSearch);
 			titlePanel.add(titleRw2);
 			btnSearch=new JButton("Search");
+			btnSearch.addActionListener(new ActionListener(){
+				
+				public void actionPerformed(ActionEvent e){
+					
+					String newId=txtSearch.getText();
+					Customer c1=customerCollection.search(newId);
+					if(c1!=null){
+							
+							JOptionPane.showMessageDialog(null,"Contact Found..!");
+							txtId.setText(c1.getId());
+							txtName.setText(c1.getName());
+							txtNumber.setText(c1.getNumber());
+							txtCompany.setText(c1.getCompany());
+							txtSalary.setText(c1.getSalary()+"");
+							txtBirthDay.setText(c1.getBirthDay());
+							txtSearch.setText("");
+						}else{
+							
+							JOptionPane.showMessageDialog(null,"Contact not Found..!");
+							txtSearch.setText("");
+							txtSearch.requestFocus();
+							}
+					
+					}
+				
+				});
 			titleRw2.add(btnSearch);
 			btnSearch.setFont(new Font("",1,20));
 			
 			add("North",titlePanel);
-			
-			
-			txtSearch=new JTextField(20);
-			
 			
 			JPanel lblPanel=new JPanel(new GridLayout(6,1));
 			lblPanel.setBorder(new EmptyBorder(40,20,10,0));
@@ -88,7 +137,7 @@ class SearchCustomerForm extends JFrame{
 			txtPanel.setBorder(new EmptyBorder(40,20,0,0));
 			
 			JPanel idtxtPanel=new JPanel();
-			txtId=sizeSettings(10);
+			txtId=sizeSettings(20);
 			txtId.setBorder(null);
 			txtId.setEditable(false);
 			idtxtPanel.add(txtId);
@@ -97,7 +146,8 @@ class SearchCustomerForm extends JFrame{
 			
 			JPanel nametxtPanel=new JPanel();
 			txtName=sizeSettings(20);
-			txtId.setBorder(null);
+			txtName.setBorder(null);
+			txtName.setEditable(false);
 			nametxtPanel.add(txtName);
 			txtPanel.add(nametxtPanel);
 			
@@ -105,6 +155,7 @@ class SearchCustomerForm extends JFrame{
 			JPanel numbertxtPanel=new JPanel();
 			txtNumber=sizeSettings(20);
 			txtNumber.setBorder(null);
+			txtNumber.setEditable(false);
 			numbertxtPanel.add(txtNumber);
 			txtPanel.add(numbertxtPanel);
 			
@@ -112,6 +163,7 @@ class SearchCustomerForm extends JFrame{
 			JPanel companytxtPanel=new JPanel();
 			txtCompany=sizeSettings(20);
 			txtCompany.setBorder(null);
+			txtCompany.setEditable(false);
 			companytxtPanel.add(txtCompany);
 			txtPanel.add(companytxtPanel);
 			
@@ -119,6 +171,7 @@ class SearchCustomerForm extends JFrame{
 			JPanel salarytxtPanel=new JPanel();
 			txtSalary=sizeSettings(20);
 			txtSalary.setBorder(null);
+			txtSalary.setEditable(false);
 			salarytxtPanel.add(txtSalary);
 			txtPanel.add(salarytxtPanel);
 			
@@ -126,6 +179,7 @@ class SearchCustomerForm extends JFrame{
 			JPanel BirthDaytxtPanel=new JPanel();
 			txtBirthDay=sizeSettings(20);
 			txtBirthDay.setBorder(null);
+			txtBirthDay.setEditable(false);
 			BirthDaytxtPanel.add(txtBirthDay);
 			txtPanel.add(BirthDaytxtPanel);
 			
@@ -140,6 +194,15 @@ class SearchCustomerForm extends JFrame{
 
 			JPanel footerRow2 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 			btnHomePage = new JButton("🏠 Back To Home");
+			btnHomePage.addActionListener(new ActionListener(){
+				
+				public void actionPerformed(ActionEvent e){
+					//new MainForm().setVisible(true);
+						dispose();
+					
+					}
+				
+				});
 			btnHomePage.setFont(new Font("", Font.BOLD, 15));
 			footerRow2.add(btnHomePage);
 

@@ -53,7 +53,7 @@ class MainForm extends JFrame{
 				
 				public void actionPerformed(ActionEvent evt){
 					
-					new UpdateCustomerForm().setVisible(true);
+					new UpdateCustomerForm(customerCollection).setVisible(true);
 					
 					}
 				
@@ -65,7 +65,7 @@ class MainForm extends JFrame{
 			btnSearch.addActionListener(new ActionListener(){
 				
 				public void  actionPerformed(ActionEvent evt){
-					new SearchCustomerForm().setVisible(true);
+					new SearchCustomerForm(customerCollection).setVisible(true);
 					
 					}
 				
@@ -78,7 +78,7 @@ class MainForm extends JFrame{
 				
 				public void actionPerformed(ActionEvent evt){
 					
-					new DeleteCustomerForm().setVisible(true);
+					new DeleteCustomerForm(customerCollection).setVisible(true);
 					
 					}
 				
@@ -91,7 +91,7 @@ class MainForm extends JFrame{
 				
 				public void actionPerformed(ActionEvent evt){
 					
-					new CustomerListForm().setVisible(true);
+					new CustomerListForm(customerCollection).setVisible(true);
 					
 					}
 				
@@ -102,6 +102,13 @@ class MainForm extends JFrame{
 			
 			btnExit=new JButton("Exit");
 			btnExit.setFont(new Font("",1,15));
+			btnExit.addActionListener(new ActionListener(){
+				
+				public void actionPerformed(ActionEvent e){
+					System.exit(0);
+					}
+				
+				});
 			btnExit.setBackground(new Color(70, 130, 180)); 
 			btnExit.setForeground(Color.WHITE);
 			JPanel btnPanel=new JPanel(new FlowLayout(FlowLayout.RIGHT));

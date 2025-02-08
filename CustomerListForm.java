@@ -10,9 +10,11 @@ class CustomerListForm extends JFrame {
     private JButton btnListBySalary;
     private JButton btnListByBirthDay;
     private JButton btnHomePage;
+    private CustomerCollection customerCollection;
 
-    CustomerListForm() {
-      
+    CustomerListForm(CustomerCollection customerCollection) {
+		
+		this.customerCollection=customerCollection;
         setSize(500, 500);
         setTitle("Contact List");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -41,7 +43,7 @@ class CustomerListForm extends JFrame {
 			
 			public void actionPerformed(ActionEvent evt){
 				
-				new SortByName().setVisible(true);
+				new SortByName(customerCollection).setVisible(true);
 
 		
 				}
@@ -54,7 +56,7 @@ class CustomerListForm extends JFrame {
 			
 			public void actionPerformed(ActionEvent evt){
 				
-				new SortBySalary().setVisible(true);
+				new SortBySalary(customerCollection).setVisible(true);
 
 		
 				}
@@ -67,7 +69,7 @@ class CustomerListForm extends JFrame {
 			
 			public void actionPerformed(ActionEvent evt){
 				
-				new SortByBirthDay().setVisible(true);
+				new SortByBirthDay(customerCollection).setVisible(true);
 
 		
 				}
@@ -82,6 +84,15 @@ class CustomerListForm extends JFrame {
         footerPanel.setBackground(new Color(30, 144, 255)); 
 
         btnHomePage = new JButton("🏠 Back To Home");
+        btnHomePage.addActionListener(new ActionListener(){
+				
+				public void actionPerformed(ActionEvent e){
+					//new MainForm().setVisible(true);
+						dispose();
+					
+					}
+				
+				});
         btnHomePage.setFont(new Font("", Font.BOLD, 18));
         btnHomePage.setBackground(Color.WHITE);
         btnHomePage.setForeground(Color.BLACK);
